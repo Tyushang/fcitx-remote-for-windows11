@@ -24,13 +24,14 @@ Changes compared to fcitx-remote-for-windows:
       (add-to-list 'exec-path fcitx-path))
   #+END_SRC
 
-* Problems
-  Currently this program works great, but still has some minor problems:
-  1. =SendInput= can't guarantee the keyboard input sequence it has
-     sent to be processed before it returns. In some sense, it is not
-     fully /synchronized/ (please correct me if I'm wrong). Therefore,
-     sometimes if you're typing *really fast*, the input method may
-     not be closed before your next input. I noticed this when I
-     tested the =prefix-keys= feature of =fcitx.el=.
-  2. =ALT+SHIFT= or =WIN+SPACE= is not configurable right now.
+* MISC
+  During devolopement, I found:
+  1. fcitx-remote.exe dosen't work on CMD(call exe directly in CMD), but it works fine on powershell and emacs.
+     I guess maybe there's no message handler on CMD. So maybe the hotkey method is more general(hotkey method works fine on CMD/powershell/emacs).
+     I leave a hotkey version implementation located in ./fcitx-remote/fcitx-remote-by-hotkey.cpp, you can use this version if you like.
+  2. I have test the time consumption of calling fcitx-remote.exe, it tooks 15ms on average in powershell, and 80ms on average in emacs.
+     Maybe calling exe from emacs have extra cost. Anyway, The current degree of lag is acceptable to me.
+  3. If you want to be more smoother, then I'm afraid you can't use the call-exe method.
+     This requires modifying the source code of [[https://github.com/cute-jumper/fcitx.el][fcitx]].
+     I tried to switch the input method directly by communicating between elisp and windows. The result There is no good solution;
 
